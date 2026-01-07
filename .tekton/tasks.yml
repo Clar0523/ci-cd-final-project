@@ -1,0 +1,33 @@
+version: "1.0"
+
+tasks:
+
+  cleanup:
+    desc: "Remove build artifacts and tmp files"
+    cmds:
+      - "echo 'Cleaning up...'"
+      - "rm -rf build/"
+      - "rm -rf dist/"
+      - "rm -rf coverage/"
+      - "find . -name '*.pyc' -delete || true"
+      - "find . -name '*.log' -delete || true"
+    silent: false
+
+  test:nose:
+    desc: "Run Python tests with nose"
+    deps:
+      - cleanup
+    cmds:
+      - "echo 'Running nose tests...'"
+      - "nosetests --with-coverage --coverage-report=term-missing"
+    silent: false
+
+  test:jest:
+    desc: "Run JavaScript tests with Jest"
+    deps:
+      - cleanup
+    cmds:
+      - "echo 'Running Jest tests...'"
+      - "npm install"
+      - "npx jest --coverage"
+    silent: false
